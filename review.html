@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Preview — Visualize Studio</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+<div class="studio-shell" id="reviewShell">
+  <header class="studio-header">
+    <a href="index.html" class="brand"><span class="brand-mark">V</span>Visualize</a>
+    <div class="progress-steps" id="progressSteps"></div>
+    <button class="help-btn" id="helpBtn">Help ?</button>
+  </header>
+
+  <main class="review-main" style="flex:1;">
+    <section class="review-preview-pane">
+      <div class="review-intro" style="padding:24px 0 10px;">
+        <span class="eyebrow" id="reviewEyebrow">Final Preview</span>
+        <h2 style="margin-top:10px;">Review Your Design</h2>
+        <p style="color:rgba(246,244,239,0.6);margin-top:6px;">Make sure everything looks the way you want before submitting.</p>
+      </div>
+      <div class="side-toggle" id="reviewSideToggle" style="align-self:center;margin-bottom:16px;">
+        <button data-side="front" class="active">Front</button>
+        <button data-side="back">Back</button>
+      </div>
+      <div class="garment-preview-area" id="reviewPreviewArea" style="min-height:420px;max-height:520px;">
+        <div id="reviewGarmentMock" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;"></div>
+      </div>
+    </section>
+
+    <aside class="review-details-pane">
+      <h3 style="font-size:19px;margin-bottom:18px;">Design Details</h3>
+      <div class="detail-row"><span class="label">Garment</span><span class="value" id="detailGarment">—</span></div>
+      <div class="detail-row"><span class="label">Fit</span><span class="value" id="detailFit">—</span></div>
+      <div class="detail-row"><span class="label">Color</span><span class="value" id="detailColor">—</span></div>
+
+      <div style="margin-top:22px;">
+        <span class="brief-group-label">Design Brief</span>
+        <div id="reviewBriefSummary" style="margin-top:10px;"></div>
+      </div>
+
+      <div style="margin-top:22px;">
+        <span class="brief-group-label">Design Elements — <span id="elementSideLabel">Front</span></span>
+        <ul class="element-list" id="elementList" style="margin-top:10px;"></ul>
+      </div>
+
+      <p class="tag" style="padding:14px 16px;margin-top:24px;font-size:12.5px;color:rgba(246,244,239,0.6);line-height:1.6;">
+        <strong style="color:var(--paper);">AI-generated visual concept only</strong> — not final production artwork. This preview is intended to help visualize and communicate your design idea.
+      </p>
+    </aside>
+  </main>
+
+  <footer class="review-footer" id="reviewFooter">
+    <button class="btn btn-ghost" id="backToEditBtn">← Back to Editing</button>
+    <button class="btn btn-primary btn-lg" id="submitBtn">Submit Design ✓</button>
+  </footer>
+</div>
+
+<!-- Submit confirmation modal -->
+<div class="modal-overlay" id="submitModal">
+  <div class="modal-box">
+    <h3>Ready to Submit?</h3>
+    <p style="margin-top:12px;color:rgba(246,244,239,0.7);font-size:14.5px;">Your design will be submitted as a visual reference for the next stage of the design process.</p>
+    <div class="modal-thumb" id="submitThumb" style="margin:16px 0;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-block" data-close-modal>Cancel</button>
+      <button class="btn btn-primary btn-block" id="confirmSubmitBtn">Submit Design</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help -->
+<div class="modal-overlay" id="helpModal">
+  <div class="modal-box">
+    <button class="modal-close-btn" data-close-modal>✕</button>
+    <span class="eyebrow modal-eyebrow">Help — Final Preview</span>
+    <p>This is a read-only preview of your finished design. Switch between Front and Back to check both sides. Click <strong>Back to Editing</strong> to make changes. When ready, click <strong>Submit Design</strong>.</p>
+  </div>
+</div>
+
+<!-- Success overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-check">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>
+  </div>
+  <h2>Design Submitted!</h2>
+  <p>Your design has been submitted as a visual reference for the next stage of the design process.</p>
+  <p class="success-note">
+    <!-- FRONTEND SAMPLE ONLY -->
+    <!-- TODO: Connect to artist submission backend -->
+    This is a frontend prototype only. No actual submission has been made. In the full application, this step would forward the design to the professional artist.
+  </p>
+  <div class="success-actions">
+    <a href="design.html" class="btn btn-ghost" id="startNewBtn">Start Another Design</a>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+<script src="js/studio.js"></script>
+</body>
+</html>

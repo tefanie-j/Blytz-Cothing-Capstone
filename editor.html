@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Editing — Visualize Studio</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+<div class="studio-shell">
+
+  <!-- Sticky top: header + design brief + toolbar -->
+  <div class="editor-sticky-top" id="editorStickyTop">
+    <header class="studio-header">
+      <a href="index.html" class="brand"><span class="brand-mark">V</span>Visualize</a>
+      <div class="progress-steps" id="progressSteps"></div>
+      <button class="help-btn" id="helpBtn">Help ?</button>
+    </header>
+  
+    <div class="canvas-toolbar" id="canvasToolbar">
+      <div class="toolbar-group">
+        <div class="side-toggle" id="editorSideToggle">
+          <button data-side="front" class="active">Front</button>
+          <button data-side="back">Back</button>
+        </div>
+      </div>
+      <div class="toolbar-group">
+        <button class="icon-btn" id="undoBtn" title="Undo" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12H8"/></svg> Undo
+        </button>
+        <button class="icon-btn" id="redoBtn" title="Redo" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h6"/></svg> Redo
+        </button>
+      </div>
+      <div class="toolbar-group">
+        <div style="position:relative;">
+          <button class="icon-btn" id="addBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add
+          </button>
+          <div class="add-dropdown" id="addDropdown">
+            <button data-add="text">+ Add Text</button>
+            <button data-add="image">+ Add Image</button>
+            <button data-add="shape-rect">+ Rectangle</button>
+            <button data-add="shape-circle">+ Circle</button>
+            <button data-add="shape-triangle">+ Triangle</button>
+            <button data-add="shape-star">+ Star</button>
+            <button data-add="shape-line">+ Line</button>
+          </div>
+        </div>
+        <button class="icon-btn" id="autoLayoutAllBtn">⊹ Auto Layout All</button>
+        <button class="icon-btn" id="randomTestBtn" style="border-color:rgba(122,92,255,0.5);color:var(--violet-glow);">+ Random Test</button>
+      </div>
+      <div class="save-indicator" id="saveIndicator"><span class="dot"></span><span id="saveIndicatorText">Saved locally</span></div>
+    </div>
+  </div>
+
+  <!-- Three-column editor body -->
+  <div class="editor-main" id="editorMain">
+
+    <!-- LEFT: Object Properties -->
+    <section class="editor-panel left" id="propertiesPanel">
+      <h3>Object Properties</h3>
+      <div class="panel-empty" id="propertiesEmpty">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20l9-9-4-4-9 9v4h4z"/><path d="M14.5 6.5l3 3"/></svg>
+        <strong>Select an object to view its properties.</strong>
+        Click an element on the shirt or choose from Layers.
+      </div>
+      <div id="propertiesContent" style="display:none;"></div>
+    </section>
+
+    <!-- CENTER: Canvas -->
+    <section class="canvas-column">
+      <div class="canvas-stage-wrap" id="canvasStageWrap">
+        <div class="canvas-stage" id="canvasStage">
+          <div class="canvas-garment-bg" id="canvasGarmentBg"></div>
+          <div class="canvas-objects" id="canvasObjects"></div>
+        </div>
+      </div>
+      <div class="zoom-controls">
+        <button class="icon-btn" id="zoomOutBtn">–</button>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <button class="icon-btn" id="zoomInBtn">+</button>
+        <button class="fit-screen-btn" id="fitScreenBtn">Fit</button>
+      </div>
+      <div style="text-align:center;padding:12px 0 4px;font-family:var(--font-mono);font-size:11px;color:rgba(246,244,239,0.3);">
+        FRONTEND SAMPLE / PROTOTYPE — Objects clip to shirt on Review page
+      </div>
+        <div class="design-brief" id="designBrief"></div>
+    <!-- Sticky canvas toolbar -->
+    </section>
+
+    <!-- RIGHT: Layers -->
+    <section class="editor-panel right" id="layersPanel">
+      <h3>Layers</h3>
+      <div class="panel-empty" id="layersEmpty">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+        <strong>No layers yet.</strong>
+        Use Add to begin.
+      </div>
+      <div class="layer-list" id="layerList"></div>
+    </section>
+  </div>
+
+  <footer class="editor-footer">
+    <span style="font-size:13px;color:rgba(246,244,239,0.5);">Changes are saved locally as you work.</span>
+    <button class="btn btn-primary btn-lg" id="reviewBtn">Review &amp; Confirm →</button>
+  </footer>
+</div>
+
+<input type="file" id="imageUploadInput" accept="image/*" style="display:none;">
+
+<!-- Help modal -->
+<div class="modal-overlay" id="helpModal">
+  <div class="modal-box">
+    <button class="modal-close-btn" data-close-modal>✕</button>
+    <span class="eyebrow modal-eyebrow">Help — Manual Editing</span>
+    <div class="help-section"><h4>Selecting</h4><p>Click an object on the shirt or select from the Layers panel on the right.</p></div>
+    <div class="help-section"><h4>Moving</h4><p>Drag any object freely across the canvas. Objects may extend beyond the shirt during editing — they will be clipped on the Review page.</p></div>
+    <div class="help-section"><h4>Resizing</h4><p>Drag any of the 8 handles around a selected object to resize it.</p></div>
+    <div class="help-section"><h4>Rotating</h4><p>Drag the white handle above a selected object, or use the Rotation slider in the properties panel.</p></div>
+    <div class="help-section"><h4>Auto Layout</h4><p>Click Auto Layout in the properties panel to position the selected object automatically, or use Auto Layout All in the toolbar.</p></div>
+    <div class="help-section"><h4>Front / Back</h4><p>Switch sides using the Front / Back buttons in the toolbar. Each side has its own objects.</p></div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+<script src="js/studio.js"></script>
+</body>
+</html>

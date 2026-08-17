@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Prompt — Visualize Studio</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+<div class="studio-shell">
+  <header class="studio-header">
+    <a href="index.html" class="brand"><span class="brand-mark">V</span>Visualize</a>
+    <div class="progress-steps" id="progressSteps"></div>
+    <button class="help-btn" id="helpBtn">Help ?</button>
+  </header>
+
+  <main class="design-main" style="grid-template-columns:1.4fr 1fr;">
+
+    <!-- ===== CENTER: GARMENT PREVIEW ===== -->
+    <section class="preview-pane">
+      <div class="side-toggle" id="sideToggle">
+        <button data-side="front" class="active">Front</button>
+        <button data-side="back">Back</button>
+      </div>
+      <div class="garment-preview-area" id="garmentPreviewArea">
+        <div class="preview-empty" id="previewEmpty">
+          <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 4l-5 2v4l3-1v11h10V9l3 1V6l-5-2-2 2h-2z"/></svg>
+          <p>Choose a garment to begin.</p>
+          <span>Select garment type, fit, and color to see your preview.</span>
+        </div>
+        <div class="garment-mock" id="garmentMock" style="display:none;"></div>
+      </div>
+
+      <!-- Prompt Stack displayed below garment on left -->
+      <div id="promptStackWrap" style="margin-top:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h3 style="font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:rgba(246,244,239,0.5);">Design Prompts</h3>
+        </div>
+        <div id="promptStack"></div>
+      </div>
+    </section>
+
+    <!-- ===== RIGHT: CONTROLS ===== -->
+    <aside class="control-panel" id="controlPanel">
+
+      <!-- Garment Settings -->
+      <div class="control-block">
+        <h3>Garment Type</h3>
+        <div class="garment-type-grid" id="garmentTypeGrid"></div>
+      </div>
+
+      <div class="control-block">
+        <h3>Fit</h3>
+        <div class="fit-options" id="fitOptions"></div>
+      </div>
+
+      <div class="control-block">
+        <h3>Color</h3>
+        <div class="color-grid" id="colorGrid"></div>
+      </div>
+
+      <!-- Prompt Mode -->
+      <div class="control-block">
+        <h3>Design Prompt</h3>
+        <div class="mode-toggle-large" id="modeToggle">
+          <button data-mode="overall" class="active">
+            <strong>Overall Design</strong>
+            <span>Describe an entire side</span>
+          </button>
+          <button data-mode="individual">
+            <strong>Individual Areas</strong>
+            <span>Describe specific zones</span>
+          </button>
+        </div>
+
+        <!-- Overall Panel -->
+        <div id="panelOverall">
+          <div class="overall-option-grid" id="overallOptionGrid">
+            <div class="overall-option-card" data-overall="front">
+              <div class="oo-title">Overall Front</div>
+              <div class="oo-sub">Entire front side</div>
+              <div class="oo-status">✓ Prompt added</div>
+            </div>
+            <div class="overall-option-card" data-overall="back">
+              <div class="oo-title">Overall Back</div>
+              <div class="oo-sub">Entire back side</div>
+              <div class="oo-status">✓ Prompt added</div>
+            </div>
+            <div class="overall-option-card" data-overall="frontBack">
+              <div class="oo-title">Overall Front &amp; Back</div>
+              <div class="oo-sub">Both sides combined</div>
+              <div class="oo-status">✓ Prompt added</div>
+            </div>
+          </div>
+          <div class="inline-prompt-editor" id="overallEditor" style="display:none;">
+            <h4 id="overallEditorLabel">Overall Front</h4>
+            <div class="field">
+              <textarea id="overallPromptText" rows="3" placeholder="Describe the complete design..."></textarea>
+            </div>
+            <div class="inline-prompt-actions">
+              <button class="btn btn-primary btn-sm" id="overallAddBtn">Add Prompt</button>
+              <button class="btn btn-ghost btn-sm" id="overallCancelBtn">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Individual Panel -->
+        <div id="panelIndividual" style="display:none;">
+          <div class="area-side-tabs" id="areaSideTabs">
+            <button data-side="front" class="active">Front Areas</button>
+            <button data-side="back">Back Areas</button>
+          </div>
+          <div class="area-btn-grid" id="areaBtnGrid"></div>
+          <div class="inline-prompt-editor" id="individualEditor" style="display:none;">
+            <h4 id="individualEditorLabel">Center Chest</h4>
+            <div class="field">
+              <textarea id="individualPromptText" rows="3" placeholder="Describe what should appear here..."></textarea>
+            </div>
+            <div class="inline-prompt-actions">
+              <button class="btn btn-primary btn-sm" id="individualAddBtn">Add Prompt</button>
+              <button class="btn btn-ghost btn-sm" id="individualCancelBtn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="design-footer">
+    <button class="btn btn-primary btn-lg" id="continueBtn">Continue to Design →</button>
+  </footer>
+</div>
+
+<!-- Conflict modal -->
+<div class="modal-overlay" id="conflictModal">
+  <div class="modal-box">
+    <h3>Conflicting Prompts</h3>
+    <p id="conflictMsg" style="margin-top:10px;color:rgba(246,244,239,0.7);font-size:14.5px;"></p>
+    <div class="modal-actions" style="margin-top:20px;">
+      <button class="btn btn-ghost btn-block" id="conflictCancel">Cancel</button>
+      <button class="btn btn-primary btn-block" id="conflictReplace">Replace Existing Prompt</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mode-switch confirmation -->
+<div class="modal-overlay" id="modeSwitchModal">
+  <div class="modal-box">
+    <h3>Switch Design Mode?</h3>
+    <p style="margin-top:10px;color:rgba(246,244,244,0.7);font-size:14.5px;">Changing design mode will remove your current prompts. Do you want to continue?</p>
+    <div class="modal-actions" style="margin-top:20px;">
+      <button class="btn btn-ghost btn-block" id="modeSwitchCancel">Cancel</button>
+      <button class="btn btn-primary btn-block" id="modeSwitchConfirm">Switch Mode</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit prompt modal -->
+<div class="modal-overlay" id="editPromptModal">
+  <div class="modal-box">
+    <button class="modal-close-btn" data-close-modal>✕</button>
+    <span class="eyebrow modal-eyebrow">Edit Prompt</span>
+    <h3 id="editPromptLabel" style="margin-top:8px;margin-bottom:14px;"></h3>
+    <div class="field"><textarea id="editPromptText" rows="4"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-block" data-close-modal>Cancel</button>
+      <button class="btn btn-primary btn-block" id="editPromptSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help -->
+<div class="modal-overlay" id="helpModal">
+  <div class="modal-box">
+    <button class="modal-close-btn" data-close-modal>✕</button>
+    <span class="eyebrow modal-eyebrow">Help — Design Prompt</span>
+    <div class="help-section"><h4>Step 1 — Choose Garment</h4><p>Pick a garment type, fit, and color. The preview updates immediately.</p></div>
+    <div class="help-section"><h4>Step 2 — Overall or Individual?</h4><p><strong>Overall Design</strong> lets you describe an entire side at once. <strong>Individual Areas</strong> lets you describe specific zones like Center Chest or Lower Back separately.</p></div>
+    <div class="help-section"><h4>Step 3 — Continue</h4><p>Once you have at least one prompt, click <strong>Continue to Design</strong>.</p></div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+<script src="js/studio.js"></script>
+</body>
+</html>
