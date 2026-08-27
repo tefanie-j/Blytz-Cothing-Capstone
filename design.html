@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Prompt — Visualize Studio</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+<div class="chat-shell">
+  <header class="chat-header">
+    <div class="chat-header-left">
+      <a href="index.html" class="brand"><span class="brand-mark">V</span>Visualize</a>
+      <div class="progress-steps" id="progressSteps"></div>
+    </div>
+    <div class="chat-header-right">
+      <button class="btn btn-ghost btn-sm" id="skipToEditorBtn">Skip to Editor →</button>
+    </div>
+  </header>
+
+  <div class="chat-thread" id="chatThread">
+    <!-- Chat messages will be inserted here -->
+  </div>
+
+  <div class="chat-input-dock">
+    <div class="chat-input-bar">
+      <textarea id="chatInput" placeholder="Describe your design..." rows="1"></textarea>
+      <div class="chat-input-controls">
+        <button class="btn btn-ghost btn-sm" id="attachBtn" title="Attach image">📎</button>
+        <div class="garment-picker" id="garmentPicker">
+          <button class="btn btn-ghost btn-sm" id="garmentPickerBtn">👕 T-Shirt ▾</button>
+          <div class="garment-dropdown" id="garmentDropdown"></div>
+        </div>
+        <div class="color-picker" id="colorPicker">
+          <button class="btn btn-ghost btn-sm" id="colorPickerBtn">● Black ▾</button>
+          <div class="color-dropdown" id="colorDropdown"></div>
+        </div>
+        <button class="btn btn-primary btn-sm" id="sendBtn" disabled>↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+<script src="js/studio.js"></script>
+</body>
+</html>
