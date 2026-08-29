@@ -481,6 +481,7 @@
   padding: 26px;
   display:flex;
   flex-direction:column;
+  justify-content: flex-end;
 }
 .chat-message{
   margin-bottom: 20px;
@@ -525,6 +526,8 @@
   background: rgba(11,11,14,0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  position: sticky;
+  bottom: 0;
 }
 .chat-input-bar{
   display:flex;

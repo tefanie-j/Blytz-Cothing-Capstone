@@ -336,3 +336,13 @@ These are the spots where the paper makes specific claims that the code must hon
 | `studio.css` | Shared styles. Add editor-only styles to `editor.css` instead. |
 | `review.html` static rendering | `staticObjDiv()` reads the canvas object schema directly. The schema field names must stay stable. |
 | Canvas object schema field names | `review.html` and any future Django serializers depend on these exact names. |
+## Bug-fixing discipline
+- Before editing a file to fix a reported bug, always view its current
+  contents first — do not rely on memory of a previous edit.
+- Before making changes, state your hypothesis for the root cause and quote
+  the exact lines you believe are responsible.
+- If the user reports that a previously attempted fix did not work, do not
+  repeat the same change. Instead, ask for the exact observed behavior or
+  error output, or add temporary debug logging and ask the user to report
+  results, before proposing another fix.
+- Never assume a bug still exists without re-checking the current file state.
